@@ -44,3 +44,9 @@ export interface ICosmosWalletChains {
 export interface ICosmosWalletChainsData {
     [chainName: string]: ICosmosChainWallet;
 }
+
+export interface Coin  {
+    denom: string;
+    amount: string;
+    exp?: number;
+  };
