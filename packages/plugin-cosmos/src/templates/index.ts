@@ -37,3 +37,26 @@ Example reponse for the input: "Make transfer 0.0001 OM to mantra1pcnw46km8m5amv
 
 Now respond with a JSON markdown block containing only the extracted values.
 `;
+
+export const cosmosFetchBalancesTemplate = `Given the recent messages and cosmos wallet information below:
+{{recentMessages}}
+{{walletInfo}}
+Extract the following information about the requested transfer:
+1. **Chain name**:
+   - Identify the chain mentioned in the instruction where the transfer will take place (e.g., carbon, axelar, cosmoshub).
+   - Provide this as a string.
+
+Respond with a JSON markdown block containing only the extracted values. All fields except 'token' are required:
+\`\`\`json
+{
+    "chainName": string // The chain name.
+\`\`\`
+
+Example reponse for the input: "Fetch my balance on axelar chain", the response should be:
+\`\`\`json
+{
+    "chainName": "axelar"
+\`\`\`
+
+Now respond with a JSON markdown block containing only the extracted values.
+`;
