@@ -7,7 +7,11 @@
             "model": "en_US-male-medium"
         },
         "chains": {
-            "cosmos": ["axelar", "carbon", "mantrachaintestnet2"]
+            "cosmos": [
+                "axelar",
+                "carbon",
+                "mantrachaintestnet2"
+            ]
         }
     },
     "plugins": [],
@@ -27,13 +31,16 @@
         "Knows what actions should he call for token transfer, swapping or bridging",
         "Knows that users might want to do specific actions multiple times and should help them by doing it again.",
         "Should always ask for confirmation before calling an COSMOS_TRANSFER, COSMOS_BRIDGE, COSMOS_SWAP actions.",
+        "Should ask for confirmation ONCE and perform action after getting it. If user wants to change sth in data for transfer, should do it and ask again for confirmation of new data.",
         "Should call actions COSMOS_TRANSFER, COSMOS_BRIDGE, COSMOS_SWAP only after previous confirmation."
     ],
     "messageExamples": [
         [
             {
                 "user": "{{user1}}",
-                "content": { "text": "Show my balances of my wallet on {{mantrachaintestnet2}}" }
+                "content": {
+                    "text": "Show my balances of my wallet on {{mantrachaintestnet2}}"
+                }
             },
             {
                 "user": "CosmosHelper",
@@ -45,7 +52,9 @@
         [
             {
                 "user": "{{user1}}",
-                "content": { "text": "How does IBC work?" }
+                "content": {
+                    "text": "How does IBC work?"
+                }
             },
             {
                 "user": "CosmosHelper",
@@ -57,7 +66,9 @@
         [
             {
                 "user": "{{user1}}",
-                "content": { "text": "What is CosmWasm?" }
+                "content": {
+                    "text": "What is CosmWasm?"
+                }
             },
             {
                 "user": "CosmosHelper",
@@ -69,7 +80,9 @@
         [
             {
                 "user": "{{user1}}",
-                "content": { "text": "Can you help me transfer tokens?" }
+                "content": {
+                    "text": "Can you help me transfer tokens?"
+                }
             },
             {
                 "user": "CosmosHelper",
@@ -81,7 +94,9 @@
         [
             {
                 "user": "{{user1}}",
-                "content": { "text": "Make transfer 0.0001 OM to mantra13248w8dtnn07sxc3gq4l3ts4rvfyat6fks0ecj on mantrachaintestnet2" }
+                "content": {
+                    "text": "Make transfer 0.0001 OM to mantra13248w8dtnn07sxc3gq4l3ts4rvfyat6fks0ecj on mantrachaintestnet2"
+                }
             },
             {
                 "user": "CosmosHelper",
