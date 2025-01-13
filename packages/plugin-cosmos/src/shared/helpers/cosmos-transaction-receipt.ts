@@ -6,6 +6,7 @@ import type {
 const DEFUALT_EVENTS = [
     { eventName: "fee_pay", attributeType: "fee" },
     { eventName: "tip_refund", attributeType: "tip" },
+    { eventName: "tx", attributeType: "fee" },
 ];
 
 export const getPaidFeeFromReceipt = (

@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { CosmosTransferActionService } from "../actions/transfer/services/cosmos-transfer-action-service.ts";
 import { AssetList } from "@chain-registry/types";
+import { getAssetBySymbol } from "@chain-registry/utils";
 
 vi.mock("@cosmjs/cosmwasm-stargate", () => ({
     SigningCosmWasmClient: {
@@ -9,7 +10,10 @@ vi.mock("@cosmjs/cosmwasm-stargate", () => ({
 }));
 
 vi.mock("@chain-registry/utils", () => ({
-    getAssetBySymbol: vi.fn().mockResolvedValue({ base: "uom" }),
+    getAssetBySymbol: vi.fn().mockImplementation(() => ({
+        base: "uom",
+        symbol: "OM",
+    })),
     convertDisplayUnitToBaseUnit: vi.fn().mockResolvedValue("OM"),
 }));
 
@@ -59,10 +63,15 @@ describe("CosmosTransferActionService", () => {
                 mockCosmosWalletChains
             );
 
+            vi.mocked(getAssetBySymbol).mockReturnValue({
+                base: "uom",
+                symbol: "OM",
+            });
+
             const expectedResult = {
                 from: "senderAddress",
                 to: "receiverAddress",
-                gasPaid: 1000,
+                gasPaid: "1000 uom",
                 txHash: "mockTxHash",
             };
 
@@ -79,17 +88,17 @@ describe("CosmosTransferActionService", () => {
                 toAddress: "receiverAddress",
             };
 
-            const mockCustomChainAssets: AssetList[] = [
+            const mockCustomChainAssets = [
                 {
-                    chain_name: "cosmos",
+                    chain_name: "test",
                     assets: [
                         {
-                            denom_units: [{ denom: "ucustom", exponent: 0 }],
-                            base: "ucustom",
-                            symbol: "CUS",
-                            display: "custom",
-                            type_asset: "unknown",
-                            name: "asset",
+                            denom_units: [{ denom: "uom", exponent: 0 }],
+                            base: "uom",
+                            symbol: "OM",
+                            display: "om",
+                            type_asset: "native",
+                            name: "Test Asset",
                         },
                     ],
                 },
@@ -99,17 +108,22 @@ describe("CosmosTransferActionService", () => {
                 mockCosmosWalletChains
             );
 
+            vi.mocked(getAssetBySymbol).mockReturnValue({
+                base: "uom",
+                symbol: "OM",
+            });
+
             const expectedResult = {
                 from: "senderAddress",
                 to: "receiverAddress",
-                gasPaid: 1000,
+                gasPaid: "1000 uom",
                 txHash: "mockTxHash",
             };
 
             await expect(
                 cosmosTransferActionService.execute(
                     mockCosmosTransferParams,
-                    mockCustomChainAssets
+                    mockCustomChainAssets as AssetList[]
                 )
             ).resolves.toEqual(expectedResult);
         });

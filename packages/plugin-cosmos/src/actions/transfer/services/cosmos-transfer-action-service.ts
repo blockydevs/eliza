@@ -47,12 +47,14 @@ export class CosmosTransferActionService implements ICosmosActionService {
 
         const availableAssets = getAvailableAssets(assets, customChainAssets);
 
+        const coinToSend = getAssetBySymbol(
+            availableAssets,
+            params.symbol,
+            params.chainName
+        );
+
         const coin: Coin = {
-            denom: getAssetBySymbol(
-                availableAssets,
-                params.symbol,
-                params.chainName
-            ).base,
+            denom: coinToSend.base,
             amount: convertDisplayUnitToBaseUnit(
                 availableAssets,
                 params.symbol,
@@ -81,7 +83,7 @@ export class CosmosTransferActionService implements ICosmosActionService {
         return {
             from: senderAddress,
             to: params.toAddress,
-            gasPaid,
+            gasPaid: `${gasPaid} ${coinToSend.base}`,
             txHash: txDeliveryResponse.transactionHash,
         };
     }

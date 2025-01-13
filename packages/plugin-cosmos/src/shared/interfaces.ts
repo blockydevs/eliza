@@ -19,7 +19,7 @@ export interface ICosmosTransaction {
     from: string;
     to: string;
     txHash: string;
-    gasPaid: number;
+    gasPaid: string;
 }
 
 export interface ICosmosWallet {
