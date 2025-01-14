@@ -1,7 +1,6 @@
 import {
     convertDisplayUnitToBaseUnit,
     getAssetBySymbol,
-    getChainByChainId,
     getChainByChainName,
 } from "@chain-registry/utils";
 import { assets, chains } from "chain-registry";
@@ -97,18 +96,17 @@ export class IBCTransferAction implements ICosmosActionService {
             ),
             cumulativeAffiliateFeeBPS: "0",
         });
+        const fromAddress = {
+            chainID: sourceChain.chain_id,
+            address: await this.cosmosWalletChains.getWalletAddress(params.chainName)
+        };
 
-        const userAddresses = await Promise.all(
-            route.requiredChainAddresses.map(async (chainID) => {
-                const chain = getChainByChainId(chains, chainID);
-                return {
-                    chainID,
-                    address: await this.cosmosWalletChains.getWalletAddress(
-                        chain.chain_name
-                    ),
-                };
-            })
-        );
+        const toAddress = {
+            chainID: destChain.chain_id,
+            address: params.toAddress
+        };
+
+        const userAddresses = [fromAddress, toAddress];
 
         let txHash: string | undefined;
 

@@ -106,16 +106,6 @@ Yes
 
 This plugin supports a token transfer action, which allows users to transfer tokens between addresses on Cosmos-compatible blockchains between different chains.
 
-#### Requirements
-
-You need to set both chain that you want to transfer founds between in env file. For example:
-
-```
-COSMOS_AVAILABLE_CHAINS=osmosistestnet,neutrontestnet
-```
-
-If you want to transfer your tokens between Osmosis Testnet and Neutron Testnet
-
 #### Example Prompts
 
 Below are examples of how the ibc transfer action can be initiated and confirmed:
