@@ -295,9 +295,9 @@ Ensure that your prompt is detailed, vivid, and incorporates all the elements me
                 );
                 //res.push({ image: image, caption: caption.title });
 
-                callback(
+                await callback(
                     {
-                        text: "...", //caption.description,
+                        text: `${filepath}`, //caption.description,
                         attachments: [
                             {
                                 id: crypto.randomUUID(),

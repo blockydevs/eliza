@@ -2,6 +2,7 @@
     "name": "CosmosHelper",
     "clients": [],
     "modelProvider": "groq",
+    "imageModelProvider": "falai",
     "settings": {
         "voice": {
             "model": "en_US-male-medium"
