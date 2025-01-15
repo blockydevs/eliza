@@ -16,6 +16,7 @@ import express from "express";
 import axios from "axios";
 import { Action } from "@elizaos/core";
 import { ModelClass } from "@elizaos/core";
+import { publishPostOnLinkedInAction } from "./actions/publish-post-action";
 
 interface LinkedInAccessToken {
     access_token: string;
@@ -383,7 +384,7 @@ export const linkedInPlugin: Plugin = {
     providers: [linkedInAccountProvider],
     evaluators: [],
     services: [],
-    actions: [sendUrlAction],
+    actions: [sendUrlAction, publishPostOnLinkedInAction],
 };
 
 export default linkedInPlugin;
