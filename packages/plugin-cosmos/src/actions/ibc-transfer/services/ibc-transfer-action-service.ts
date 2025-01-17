@@ -77,11 +77,17 @@ export class IBCTransferAction implements ICosmosActionService {
             throw new Error("Cannot find destination chain");
         }
 
-        const { denom: destAssetDenom } = await bridgeDenomProvider(
+        const bridgeDenomResult = await bridgeDenomProvider(
             denom.base,
             sourceChain.chain_id,
             destChain.chain_id
         );
+
+        if (!bridgeDenomResult || !bridgeDenomResult.denom) {
+            throw new Error("Failed to get destination asset denomination");
+        }
+
+        const destAssetDenom = bridgeDenomResult.denom;
 
         const route = await skipClient.route({
             destAssetChainID: destChain.chain_id,
@@ -110,13 +116,22 @@ export class IBCTransferAction implements ICosmosActionService {
 
         let txHash: string | undefined;
 
-        await skipClient.executeRoute({
-            route,
-            userAddresses,
-            onTransactionCompleted: async (_, executeRouteTxHash) => {
-                txHash = executeRouteTxHash;
-            },
-        });
+        try {
+            await skipClient.executeRoute({
+                route,
+                userAddresses,
+                onTransactionCompleted: async (_, executeRouteTxHash) => {
+                    txHash = executeRouteTxHash;
+                },
+            });
+        } catch (error) {
+            throw new Error(`Failed to execute route: ${error?.message}`);
+        }
+
+        if (!txHash) {
+            throw new Error("Transaction hash is undefined after executing route");
+        }
+
         return {
             from: senderAddress,
             to: params.toAddress,

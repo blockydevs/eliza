@@ -140,6 +140,7 @@ describe("IBCTransferAction", () => {
         const senderAddress = "cosmos1senderaddress";
         const targetChainId = "target-chain-id";
         const sourceChainId = "source-chain-id";
+        const mockTxHash = "mock_tx_hash_123";
 
         mockWalletChains.getWalletAddress.mockResolvedValue(senderAddress);
         // @ts-expect-error --- ...
@@ -149,18 +150,15 @@ describe("IBCTransferAction", () => {
         getAssetBySymbol.mockReturnValue({
             base: "uatom",
         });
-        const params = {
-            chainName: "test-chain",
-            targetChainName: "target-chain",
-            symbol: "ATOM",
-            amount: "10",
-            toAddress: "cosmos1receiveraddress",
-        };
 
         mockBridgeDenomProvider.mockResolvedValue({ denom: "uatom" });
         mockSkipClient.route.mockResolvedValue({
             requiredChainAddresses: [sourceChainId, targetChainId],
         });
+        mockSkipClient.executeRoute.mockImplementation(async ({ onTransactionCompleted }) => {
+            await onTransactionCompleted(null, mockTxHash);
+        });
+
         // @ts-expect-error --- ...
         const ibcTransferAction = new IBCTransferAction(mockWalletChains);
 
@@ -173,7 +171,7 @@ describe("IBCTransferAction", () => {
         expect(result).toEqual({
             from: senderAddress,
             to: params.toAddress,
-            txHash: undefined,
+            txHash: mockTxHash,
         });
         expect(mockSkipClient.executeRoute).toHaveBeenCalled();
     });

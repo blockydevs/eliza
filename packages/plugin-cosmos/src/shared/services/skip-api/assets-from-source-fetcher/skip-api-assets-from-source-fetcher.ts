@@ -58,6 +58,7 @@ export class SkipApiAssetsFromSourceFetcher {
                 headers: {
                     "Content-Type": "application/json",
                 },
+                timeout: 5000,
             });
 
             const validResponse = skipApiAssetsFromSourceResponseSchema.parse(

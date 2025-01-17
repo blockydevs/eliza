@@ -13,9 +13,19 @@ export const bridgeDenomProvider: IDenomProvider = async (
         sourceAssetChainId
     );
 
-    const ibcAssetData = bridgeData.dest_assets[destChainId]?.assets?.find(
+    const destAssets = bridgeData.dest_assets[destChainId];
+
+    if (!destAssets?.assets) {
+        throw new Error(`No assets found for chain ${destChainId}`);
+    }
+
+    const ibcAssetData = destAssets.assets?.find(
         ({ origin_denom }) => origin_denom === sourceAssetDenom
     );
+
+    if (!ibcAssetData) {
+        throw new Error(`No matching asset found for denom ${sourceAssetDenom}`);
+    }
 
     if (!ibcAssetData.denom) {
         throw new Error("No IBC asset data");

@@ -123,7 +123,7 @@ export const createIBCTransferAction = (
         const availableChains = runtime.getSetting("COSMOS_AVAILABLE_CHAINS");
         const availableChainsArray = availableChains?.split(",");
 
-        return !(mnemonic && availableChains && availableChainsArray.length);
+        return !!(mnemonic && availableChains && availableChainsArray.length);
     },
     examples: [
         [
