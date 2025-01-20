@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { IBCTransferAction } from "../actions/ibc-transfer/services/ibc-transfer-action-service"; // dostosuj ścieżkę do pliku
+import { IBCTransferAction } from "../actions/ibc-transfer/services/ibc-transfer-action-service";
 import { assets } from "chain-registry";
 import * as CosmosAssetsHelpers from "../shared/helpers/cosmos-assets";
 import { getAssetBySymbol } from "@chain-registry/utils";
