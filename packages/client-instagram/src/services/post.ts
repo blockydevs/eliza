@@ -60,8 +60,36 @@ export class InstagramPostService {
       const randomMinutes = Math.floor(Math.random() * (maxMinutes - minMinutes + 1)) + minMinutes;
       const delay = randomMinutes * 60 * 1000;
 
-      if (Date.now() > lastPostTimestamp + delay) {
+      const shouldPost = Date.now() > lastPostTimestamp + delay;
+
+
+      if (shouldPost) {
         await this.generateNewPost();
+        await this.runtime.messageManager.createMemory({
+            id: stringToUuid(`instagram-post-${new Date(Date.now()).toISOString()}`),
+            userId: this.runtime.agentId,
+            agentId: this.runtime.agentId,
+            content: {
+                text: '',
+                postPublished: `Post published at ${new Date(Date.now()).toISOString()}`,
+            },
+            roomId: stringToUuid("instagram_generate_room-" + this.state.profile?.username),
+            embedding: getEmbeddingZeroVector(),
+            createdAt: Date.now(),
+          });
+      } else {
+        await this.runtime.messageManager.createMemory({
+            id: stringToUuid(`instagram-post-${new Date(Date.now()).toISOString()}`),
+            userId: this.runtime.agentId,
+            agentId: this.runtime.agentId,
+            content: {
+                text: '',
+                postRejected: `Post rejected at ${new Date(Date.now()).toISOString()}`,
+            },
+            roomId: stringToUuid("instagram_generate_room-" + this.state.profile?.username),
+            embedding: getEmbeddingZeroVector(),
+            createdAt: Date.now(),
+          });
       }
 
       if (!this.stopProcessing) {
