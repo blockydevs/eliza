@@ -80,17 +80,6 @@ export const createIBCTransferAction = (
                         toChain: paramOptions.targetChainName,
                     },
                 });
-
-                const newMemory: Memory = {
-                    userId: _message.agentId,
-                    agentId: _message.agentId,
-                    roomId: _message.roomId,
-                    content: {
-                        text: `Transaction ${paramOptions.amount} ${paramOptions.symbol} to address ${paramOptions.toAddress} from chain ${paramOptions.chainName} to ${paramOptions.targetChainName} was successfully transferred. Tx hash: ${transferResp.txHash}`,
-                    },
-                };
-
-                await _runtime.messageManager.createMemory(newMemory);
             }
             return true;
         } catch (error) {
@@ -102,17 +91,6 @@ export const createIBCTransferAction = (
                     content: { error: error.message },
                 });
             }
-
-            const newMemory: Memory = {
-                userId: _message.agentId,
-                agentId: _message.agentId,
-                roomId: _message.roomId,
-                content: {
-                    text: `Transaction ${paramOptions.amount} ${paramOptions.symbol} to address ${paramOptions.toAddress} on chain ${paramOptions.chainName} to ${paramOptions.targetChainName} was unsuccessful.`,
-                },
-            };
-
-            await _runtime.messageManager.createMemory(newMemory);
 
             return false;
         }

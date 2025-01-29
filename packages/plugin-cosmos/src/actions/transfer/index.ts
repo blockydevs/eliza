@@ -71,17 +71,6 @@ export const createTransferAction = (pluginOptions: ICosmosPluginOptions) => ({
                         chain: cosmosTransferContent.fromChain,
                     },
                 });
-
-                const newMemory: Memory = {
-                    userId: _message.agentId,
-                    agentId: _message.agentId,
-                    roomId: _message.roomId,
-                    content: {
-                        text: `Transaction ${paramOptions.amount} ${paramOptions.symbol} to address ${paramOptions.toAddress} on chain ${paramOptions.toAddress} was successfully transfered.\n Gas paid: ${transferResp.gasPaid}. Tx hash: ${transferResp.txHash}`,
-                    },
-                };
-
-                await _runtime.messageManager.createMemory(newMemory);
             }
             return true;
         } catch (error) {
@@ -93,17 +82,6 @@ export const createTransferAction = (pluginOptions: ICosmosPluginOptions) => ({
                     content: { error: error.message },
                 });
             }
-
-            const newMemory: Memory = {
-                userId: _message.agentId,
-                agentId: _message.agentId,
-                roomId: _message.roomId,
-                content: {
-                    text: `Transaction ${paramOptions.amount} ${paramOptions.symbol} to address ${paramOptions.toAddress} on chain ${paramOptions.toAddress} was unsuccessful.`,
-                },
-            };
-
-            await _runtime.messageManager.createMemory(newMemory);
 
             return false;
         }
